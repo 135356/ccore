@@ -1,0 +1,49 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "C++ 任务", //任务标签
+            "type": "cppbuild", //任务类型
+            "command": "/usr/bin/g++", //要执行的命令
+            "args": [
+                "-fdiagnostics-color=always", //诊断信息总是以颜色显示
+                "-std=c++20", //启用 C++20 支持
+                "-g", //在可执行文件中生成调试信息
+                "${file}",
+                "-o", //指定输出文件的名称
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "编译器: /usr/bin/g++"
+        },{
+            "label": "cmake 任务",
+            "type": "shell", //表示在shell中执行
+            "command": "cmake",
+            "args": [
+                "-B", //指定构建目录
+                "${workspaceFolder}/build",
+                "-S", //指定源代码目录
+                "${workspaceFolder}"
+            ],
+            "options": { //任务的工作目录配置
+                "cwd": "${workspaceFolder}"
+            }
+        },{
+            "label": "build 任务",
+            "type": "shell",
+            "command": "cmake --build \"${workspaceFolder}/build\"",
+            "group": { //任务组
+                "kind": "build", //指定任务类型为构建
+                "isDefault": true //设置为默认构建任务
+            },
+            "dependsOn": ["cmake 任务"], //指定此任务依赖的其他任务，这里依赖前面配置的cmake任务
+            "problemMatcher": ["$gcc"] //用于在VSCode中识别编译错误的匹配器
+        },
+    ]
+}
